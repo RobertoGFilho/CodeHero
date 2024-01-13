@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:CodeHero"
+    Shell.NavBarIsVisible="True"
+    x:DataType="local:HerosViewModel"
+    x:Class="CodeHero.MainPage"
+    Title="BUSCA MARVEL | TESTE E FRONTEND">
+
+    <Grid
+        RowDefinitions="*,auto">
+
+        <VerticalStackLayout
+            Spacing="12"
+            Margin="12"
+            Grid.Row="0">
+
+            <!--search-->
+            <VerticalStackLayout
+                Spacing="12">
+                <Label
+                    TextColor="{StaticResource Primary}"
+                    Text="Nome do Personagem" />
+                <Grid>
+                    <Border
+                        BackgroundColor="Transparent"
+                        StrokeThickness="2"
+                        Stroke="WhiteSmoke" />
+
+                    <Entry
+                        Margin="24,3"
+                        FontAttributes="Bold"
+                        FontSize="20"
+                        Text="{Binding Search, Mode=TwoWay}"
+                        ReturnCommand="{Binding SearchCommand}"
+                        ReturnType="Send" />
+                </Grid>
+
+                <ActivityIndicator
+                    HorizontalOptions="Center"
+                    Color="{StaticResource Primary}"
+                    BackgroundColor="Transparent"
+                    IsVisible="{Binding IsBusy, Mode=OneWay}"
+                    IsRunning="{Binding IsBusy, Mode=OneWay}"/>
+            </VerticalStackLayout>
+
+            <!--items-->
+            <ScrollView>
+                <VerticalStackLayout
+                    Spacing="12">
+
+                    <Label 
+                        TextColor="White"
+                        BackgroundColor="{StaticResource Primary}"
+                        FontSize="22"
+                        HorizontalTextAlignment="Center"
+                        Text="Nome"/>
+
+                    <CollectionView
+                        SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                        SelectionChangedCommand="{Binding SelectCommand}"
+                        SelectionMode="Single"
+                        ItemsSource="{Binding Items}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate
+                                x:DataType="local:Character">
+                                <Grid>
+                                    <VerticalStackLayout
+                                        Spacing="18">
+
+                                        <!--item-->
+                                        <HorizontalStackLayout
+                                            Spacing=" 24">
+
+                                            <Frame
+                                                WidthRequest="40"
+                                                HeightRequest="40"
+                                                Padding="0"
+                                                CornerRadius="20"
+                                                IsClippedToBounds="True"
+                                                HasShadow="False">
+                                                <Image
+                                                    Source="{Binding thumbnail.Address}"
+                                                    Aspect="Fill" />
+                                            </Frame>
+
+                                            <Label
+                                                VerticalOptions="Center"
+                                                FontSize="26"
+                                                Text="{Binding name}" />
+
+                                        </HorizontalStackLayout>
+
+                                        <!--line-->
+                                        <Line
+                                            HeightRequest="1"
+                                            BackgroundColor="WhiteSmoke"
+                                            Margin="12,0" />
+
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+
+                    </CollectionView>
+                </VerticalStackLayout>
+            </ScrollView>
+        </VerticalStackLayout>
+
+        <!--pagination-->
+        <Grid
+            Margin="12"
+            ColumnDefinitions="auto, *, auto"
+            ColumnSpacing="12"
+            Grid.Row="1">
+            
+            <!--start-->
+            <ImageButton
+                Command="{Binding PreviousCommand}"
+                Source="left.png"
+                HeightRequest="40"
+                WidthRequest="40"
+                Grid.Column="0"/>
+
+            <!--pages-->
+            <ScrollView
+                Orientation="Horizontal"
+                Grid.Column="1">
+                <CollectionView 
+                    SelectedItem="{Binding SelectedPage, Mode=OneWay}"
+                    SelectionMode="Single"
+                    ItemsSource="{Binding Pages}"
+                    ItemsLayout="HorizontalList">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Frame
+                                    Padding="0"
+                                    HeightRequest="50"
+                                    WidthRequest="50"
+                                    CornerRadius="25"
+                                    Margin="3"
+                                    HasShadow="False">
+                                    <Label
+                                        HeightRequest="40"
+                                        WidthRequest="40"
+                                        VerticalTextAlignment="Center"
+                                        HorizontalTextAlignment="Center"
+                                        FontSize="22"
+                                        Text="{Binding}" />
+                                </Frame>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
+                        
+            <!--end-->
+            <ImageButton
+                Command="{Binding NextCommand}"   
+                Source="right.png"
+                HeightRequest="40"
+                WidthRequest="40"
+                Grid.Column="2" />
+
+
+        </Grid>
+    </Grid>
+</ContentPage>
